@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Redes</title>
+</head>
+<style>
+    #sitio{
+        font-size: 5rem;
+        background-color: black;
+        padding: 2 rem;
+        text-align: center;
+        color: #fff;
+    }
+</style>
+<body>
+    <input data-jscolor="{value: '#ffffff'}", oninput="update(this.jscolor)">
+    <div id="sitio">
+        Redes Neuronales 
+    </div>
+    <script src="brain.js"></script>
+    <script src="jscolor.min.js"></script>
+
+    <script type="text/javascript">
+
+        var network =new brain.NeuralNetwork();
+        network.train([
+        {input:{rojo:0,verde:0,azul:0},output: {color:1}},
+        {input:{rojo:1,verde:1,azul:1},output: {color:0}}
+// condicion
+        {input:{rojo:0,verde:1,azul:0},output: {color:0}}
+
+        ]);
+
+        function update(color){
+            var rgb= [color.channels.r,color.channels.g,color.channels.b];
+        console.log(rgb);
+
+            var div =document.getElementById("sitio");
+        div.style.background=color.toHEXString();
+
+        var entrada ={
+            rojo:rgb[0]/255,
+            verde:rgb[1]/255,
+            azul:rgb[2]/255,
+        };
+
+        var resultado=network.run(entrada);
+        console.log(resultado);
+// siel resultado es mayor a 5 se considera color de texto blanco
+        if(resultado.color > .5){//fondo negro letras blancas
+            div.style.color="white";
+        }
+        else{
+            div.style.color="black";//letras negras
+        }
+
+    }        
+    </script>
+
+</body>
+</html>
